@@ -2,6 +2,7 @@
   description = "um - create and maintain your own man pages";
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs";
 
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
@@ -16,9 +17,10 @@
         defaultPackage = packages.hello;
 
         # Devshell
-        devShell.default = 
-          mkShell {
-            buildInputs = with pkgs; [ruby_3_0];
+        devShell = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            ruby_3_0
+          ];
           };
 
         # Apps
@@ -27,3 +29,5 @@
       }
     );
 }
+
+
