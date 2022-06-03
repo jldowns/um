@@ -4,9 +4,17 @@
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils}:
     flake-utils.lib.eachDefaultSystem (system:
-      let pkgs = nixpkgs.legacyPackages.${system}; in
+    let 
+      pkgs = nixpkgs.legacyPackages.${system};
+      gems = pkgs.bundlerEnv {
+        name = "um-gems";
+        # inherit ruby;
+        gemdir = ./.;
+      };
+
+    in
       rec {
 
         # Packages
@@ -19,7 +27,8 @@
         # Devshell
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
-            ruby_3_0
+            gems
+            gems.wrappedRuby
           ];
           };
 
