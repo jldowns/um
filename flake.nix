@@ -10,7 +10,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
       gems = pkgs.bundlerEnv {
         name = "um-gems";
-        # inherit ruby;
+        #inherit ruby;
         gemdir = ./.;
       };
 
@@ -28,7 +28,6 @@
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             gems
-            gems.wrappedRuby
           ];
           };
 

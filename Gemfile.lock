@@ -1,0 +1,19 @@
+PATH
+  remote: .
+  specs:
+    um (4.2.0)
+      kramdown (~> 1.17)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    kramdown (1.17.0)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  um!
+
+BUNDLED WITH
+   2.2.33
