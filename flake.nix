@@ -18,15 +18,17 @@
   rec {
 
         # Packages
-        packages.defaultPackage.${system} = pkgs.stdenv.mkDerivation {
+        packages.um = pkgs.stdenv.mkDerivation {
           name = "um";
           src = ./.;
           buildInputs = [gems pkgs.ruby_3_0];
           installPhase = ''
             mkdir -p $out
-            cp -r $src $out
+            cp -r $src/* $out
           '';
         };
+
+        defaultPackage = packages.um;
 
         # Devshell
         devShell = pkgs.mkShell {
@@ -34,7 +36,7 @@
         };
 
         # Apps
-        apps.um = flake-utils.lib.mkApp { drv = packages.defaultPackage.${system}; };
+        apps.um = flake-utils.lib.mkApp { drv = packages.um; };
         defaultApp = apps.um;
       }
       );
