@@ -38,6 +38,23 @@
         # Apps
         apps.um = flake-utils.lib.mkApp { drv = packages.um; };
         defaultApp = apps.um;
+
+        # Nixos Module
+        nixosModules.um = {config, lib} : {
+          # define module options
+          options = {
+            within.programs.um = {
+              enable = lib.mkEnableOption "Enable um - create and maintain your own man pages.";
+            };
+          };
+
+          # implementation
+          config = lib.mkIf config.programs.um.enable {
+            environment.systemPackages = [ defaultApp ];
+          };
+
+        }; 
+
       }
       );
     }
