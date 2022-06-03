@@ -10,7 +10,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
       gems = pkgs.bundlerEnv {
         name = "um-gems";
-        #inherit ruby;
+        # inherit ruby;
         gemdir = ./.;
       };
 
@@ -18,17 +18,19 @@
       rec {
 
         # Packages
-        packages = flake-utils.lib.flattenTree {
-          hello = pkgs.hello;
-          gitAndTools = pkgs.gitAndTools;
+        packages.defaultPackage.${system} = pkgs.stdenv.mkDerivation {
+          name = "um";
+          src = ./.;
+          buildInputs = [gems pkgs.ruby_3_0];
+          installPhase = ''
+            mkdir -p $out
+            cp -r $src $out
+          '';
         };
-        defaultPackage = packages.hello;
 
         # Devshell
         devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            gems
-          ];
+          buildInputs = with pkgs; [ gems ruby_3_0 ];
           };
 
         # Apps
