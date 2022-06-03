@@ -5,17 +5,17 @@
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
 
   outputs = { self, nixpkgs, flake-utils}:
-    flake-utils.lib.eachDefaultSystem (system:
-    let 
-      pkgs = nixpkgs.legacyPackages.${system};
-      gems = pkgs.bundlerEnv {
-        name = "um-gems";
+  flake-utils.lib.eachDefaultSystem (system:
+  let 
+    pkgs = nixpkgs.legacyPackages.${system};
+    gems = pkgs.bundlerEnv {
+      name = "um-gems";
         # inherit ruby;
         gemdir = ./.;
       };
 
-    in
-      rec {
+  in
+  rec {
 
         # Packages
         packages.defaultPackage.${system} = pkgs.stdenv.mkDerivation {
@@ -31,13 +31,13 @@
         # Devshell
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [ gems ruby_3_0 ];
-          };
+        };
 
         # Apps
-        apps.hello = flake-utils.lib.mkApp { drv = packages.hello; };
-        defaultApp = apps.hello;
+        apps.um = flake-utils.lib.mkApp { drv = packages.defaultPackage.${system}; };
+        defaultApp = apps.um;
       }
-    );
-}
+      );
+    }
 
 
