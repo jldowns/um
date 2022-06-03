@@ -40,7 +40,7 @@
         defaultApp = apps.um;
 
         # Nixos Module
-        nixosModules.um = {config, lib} : {
+        nixosModules.um = {config, lib, ...} : {
           # define module options
           options = {
             within.programs.um = {
