@@ -43,7 +43,7 @@
         nixosModules.um = {config, lib, ...} : {
           # define module options
           options = {
-            within.programs.um = {
+            programs.um = {
               enable = lib.mkEnableOption "Enable um - create and maintain your own man pages.";
             };
           };
