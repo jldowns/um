@@ -50,7 +50,7 @@
 
           # implementation
           config = lib.mkIf config.programs.um.enable {
-            environment.systemPackages = [ defaultApp ];
+            environment.systemPackages = [ defaultPackage ];
           };
 
         }; 
