@@ -58,7 +58,7 @@
           # implementation
           config = lib.mkIf config.programs.um.enable {
             
-            xdg.configFile."umconfig".text = lib.mkBefore config.programs.um.extraConfig;
+            home.file.".um/umconfig".text = lib.mkBefore config.programs.um.extraConfig;
 
            home.sessionVariables = {
              UMCONFIG_HOME = "~/.config/umconfig";
