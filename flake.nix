@@ -54,7 +54,7 @@
             environment.systemPackages = [ defaultPackage ];
 
             # Enable for Home Manager
-            home.packages = [ defaultPackage ];
+            # home.packages = [ defaultPackage ];
           };
 
         }; 
