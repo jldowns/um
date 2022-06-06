@@ -50,7 +50,11 @@
 
           # implementation
           config = lib.mkIf config.programs.um.enable {
+            # Enable for NixOS global
             environment.systemPackages = [ defaultPackage ];
+
+            # Enable for Home Manager
+            home.packages = [ defaultPackage ];
           };
 
         }; 
