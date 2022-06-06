@@ -56,7 +56,7 @@
           };
 
           # implementation
-          config = lib.mkIf config.programs.um.enable {
+          config = lib.mkIf config.programs.um.enable rec {
             
             "${config.home.homeDirectory}/umconfig".text = lib.mkBefore config.programs.um.extraConfig;
 
