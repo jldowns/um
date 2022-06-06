@@ -44,17 +44,21 @@
           # define module options
           options = {
             programs.um = {
-              enable = lib.mkEnableOption "Enable um - create and maintain your own man pages.";
+              globalEnable = lib.mkEnableOption "Enable um as a global NixOS Module.";
+            };
+            programs.um = {
+              hmEnable = lib.mkEnableOption "Enable um as a global NixOS Module.";
             };
           };
 
           # implementation
-          config = lib.mkIf config.programs.um.enable {
+          config = lib.mkIf config.programs.um.globalEnable {
             # Enable for NixOS global
             environment.systemPackages = [ defaultPackage ];
-
+          };
+          config = lib.mkIf config.programs.um.hmEnable {
             # Enable for Home Manager
-            # home.packages = [ defaultPackage ];
+            home.packages = [ defaultPackage ];
           };
 
         }; 
