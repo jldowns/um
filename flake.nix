@@ -55,7 +55,7 @@
           config = lib.mkMerge [
             (lib.mkIf config.programs.um.globalEnable {
               # Enable for NixOS global
-              environment.systemPackages = [ defaultPackage ];
+              #environment.systemPackages = [ defaultPackage ];
             })
             (lib.mkIf config.programs.um.hmEnable {
               # Enable for Home Manager
