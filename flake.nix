@@ -44,26 +44,29 @@
           # define module options
           options = {
             programs.um = {
-              globalEnable = lib.mkEnableOption "Enable um as a global NixOS Module.";
-            };
-            programs.um = {
-              hmEnable = lib.mkEnableOption "Enable um as a global NixOS Module.";
+
+              enable = lib.mkEnableOption "Enable um configuration. This does not enable the package in environment.systemPackages or home.programs.";
+
+              extraConfig = lib.mkOption {
+                type = lib.types.lines;
+                description = "Additional configuration.";
+                default = "";
+              };
             };
           };
 
           # implementation
-          config = lib.mkMerge [
-            (lib.mkIf config.programs.um.globalEnable {
-              # Enable for NixOS global
-              #environment.systemPackages = [ defaultPackage ];
-            })
-            (lib.mkIf config.programs.um.hmEnable {
-              # Enable for Home Manager
-              home.packages = [ defaultPackage ];
-            })
-          ];
-        }; 
-      }
+          config = lib.mkIf config.programs.um.enable {
+            
+            xdg.configFile."um/umconfig".text = lib.mkBefore config.programs.um.extraConfig;
+
+            home.sessionVariables = {
+              UMCONFIG_HOME = config.programs.xdg.configHome + "um/um";
+            };
+            
+            };
+          }; 
+        }
       );
     }
 
