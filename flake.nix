@@ -60,9 +60,9 @@
             
             xdg.configFile."umconfig".text = lib.mkBefore config.programs.um.extraConfig;
 
-           # home.sessionVariables = {
-           UMCONFIG_HOME = "~/.config/umconfig";
-           # };
+           home.sessionVariables = {
+             UMCONFIG_HOME = "~/.config/umconfig";
+           };
             
             };
           }; 
