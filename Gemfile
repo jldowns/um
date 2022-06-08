@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem  "kramdown", "~> 1.17"
-gemspec
+gem "rake"
+gem "kramdown", "~> 1.17"
 
 

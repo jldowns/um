@@ -22,7 +22,8 @@
       gemdir = ./.;
     };
 
-    umBuildInputs = [gems umRuby pkgs.file pkgs.bundix];
+    # umBuildInputs = [ (pkgs.lib.lowPrio gems) umRuby pkgs.file pkgs.bundix];
+    umBuildInputs = [ umRuby gems pkgs.file pkgs.bundix];
 
   in
   rec {
@@ -34,11 +35,11 @@
         nativeBuildInputs = [ pkgs.makeWrapper ];
         buildInputs = umBuildInputs;
          installPhase = ''
-           gem build -o um.gem
-           gem install um.gem
+           # gem build -o um.gem
+           # gem install um.gem
            mkdir -p $out/bin
            cp -r $src/* $out
-           wrapProgram "$out/bin/um" --prefix PATH : ${pkgs.lib.strings.makeBinPath [ gems.wrappedRuby ]}
+           # wrapProgram "$out/bin/um" --prefix PATH : ${pkgs.lib.strings.makeBinPath [ umRuby ]}
          '';
       };
 
