@@ -2,7 +2,6 @@ PATH
   remote: .
   specs:
     um (4.2.0)
-      kramdown (~> 1.17)
 
 GEM
   remote: https://rubygems.org/
@@ -13,7 +12,8 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  kramdown (~> 1.17)
   um!
 
 BUNDLED WITH
-   2.2.33
+   2.3.15

@@ -3,45 +3,62 @@
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
-  inputs.lib.url = "github:NixOS/nixpkgs?dir=lib";
 
   outputs = {
     self,
     nixpkgs,
     flake-utils,
-    lib,
   }:
   flake-utils.lib.eachDefaultSystem (system:
   let 
     pkgs = nixpkgs.legacyPackages.${system};
+    umRuby = pkgs.ruby_3_0;
     gems = pkgs.bundlerEnv {
       name = "um-gems";
-        # inherit ruby;
-        gemdir = ./.;
-      };
+      ruby = umRuby;
+      gemfile = ./Gemfile;
+      lockfile = ./Gemfile.lock;
+      gemset = ./gemset.nix;
+      gemdir = ./.;
+    };
+
 
   in
   rec {
+   #  packages.um = pkgs.bundlerApp {
+   #    pname = "um";
+   #    gemdir = ./.;
+   #    exes = [ "um" ];
+   #    ruby = umRuby;
+   #    buildInputs = [ gems ];
 
-        # Packages
-        packages.um = pkgs.stdenv.mkDerivation {
-          name = "um";
-          src = ./.;
-          nativeBuildInputs = [ pkgs.makeWrapper ];
-          buildInputs = [gems pkgs.ruby_3_0];
-          installPhase = ''
-            mkdir -p $out
-            cp -r $src/* $out
-            chmod 777 $out/lib/um/commands.rb
-            wrapProgram "$out/lib/um/commands.rb" --prefix PATH : ${pkgs.lib.strings.makeBinPath [ pkgs.ruby_3_0 ]}
-          '';
-        };
+   #   #  postBuild = ''
+   #   #    mkdir -p $out
+   #   #    cp -r $src/* $out
+   #   #    echo $(file $out/bin/um)
+   #   #    wrapProgram $out/bin/um --prefix PATH : ${
+   #   #      pkgs.lib.makeBinPath [ pkgs.ruby_3_0 ]
+   #   #    }
+   #   #  '';
+   #  };
+
+     # Packages
+      packages.um = pkgs.stdenv.mkDerivation {
+        name = "um";
+        src = ./.;
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        buildInputs = [gems pkgs.ruby_3_0 pkgs.file];
+         installPhase = ''
+           cp -r $src/* $out
+           wrapProgram "$out/bin/um" --prefix PATH : ${pkgs.lib.strings.makeBinPath [ pkgs.ruby_3_0 ]}
+         '';
+      };
 
         defaultPackage = packages.um;
 
         # Devshell
         devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [ gems ruby_3_0 ];
+          buildInputs = with pkgs; [ gems.wrappedRuby gems bundix];
         };
 
         # Apps

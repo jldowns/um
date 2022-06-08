@@ -19,5 +19,5 @@ Gem::Specification.new do |spec|
     'templates/**/*'
   ]
 
-  spec.add_runtime_dependency 'kramdown', ['~> 1.17']
+  # spec.add_runtime_dependency 'kramdown', ['~> 1.17']
 end

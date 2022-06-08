@@ -10,7 +10,6 @@
     version = "1.17.0";
   };
   um = {
-    dependencies = ["kramdown"];
     groups = ["default"];
     platforms = [];
     source = {
