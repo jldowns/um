@@ -22,35 +22,23 @@
       gemdir = ./.;
     };
 
+    umBuildInputs = [gems umRuby pkgs.file pkgs.bundix];
 
   in
   rec {
-   #  packages.um = pkgs.bundlerApp {
-   #    pname = "um";
-   #    gemdir = ./.;
-   #    exes = [ "um" ];
-   #    ruby = umRuby;
-   #    buildInputs = [ gems ];
-
-   #   #  postBuild = ''
-   #   #    mkdir -p $out
-   #   #    cp -r $src/* $out
-   #   #    echo $(file $out/bin/um)
-   #   #    wrapProgram $out/bin/um --prefix PATH : ${
-   #   #      pkgs.lib.makeBinPath [ pkgs.ruby_3_0 ]
-   #   #    }
-   #   #  '';
-   #  };
 
      # Packages
       packages.um = pkgs.stdenv.mkDerivation {
         name = "um";
         src = ./.;
         nativeBuildInputs = [ pkgs.makeWrapper ];
-        buildInputs = [gems pkgs.ruby_3_0 pkgs.file];
+        buildInputs = umBuildInputs;
          installPhase = ''
+           gem build -o um.gem
+           gem install um.gem
+           mkdir -p $out/bin
            cp -r $src/* $out
-           wrapProgram "$out/bin/um" --prefix PATH : ${pkgs.lib.strings.makeBinPath [ pkgs.ruby_3_0 ]}
+           wrapProgram "$out/bin/um" --prefix PATH : ${pkgs.lib.strings.makeBinPath [ gems.wrappedRuby ]}
          '';
       };
 
@@ -58,7 +46,7 @@
 
         # Devshell
         devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [ gems.wrappedRuby gems bundix];
+          buildInputs = umBuildInputs;
         };
 
         # Apps

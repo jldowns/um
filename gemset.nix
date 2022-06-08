@@ -9,13 +9,4 @@
     };
     version = "1.17.0";
   };
-  um = {
-    groups = ["default"];
-    platforms = [];
-    source = {
-      path = ./.;
-      type = "path";
-    };
-    version = "4.2.0";
-  };
 }
