@@ -3,8 +3,14 @@
 
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
+  inputs.lib.url = "github:NixOS/nixpkgs?dir=lib";
 
-  outputs = { self, nixpkgs, flake-utils}:
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+    lib,
+  }:
   flake-utils.lib.eachDefaultSystem (system:
   let 
     pkgs = nixpkgs.legacyPackages.${system};
@@ -21,10 +27,13 @@
         packages.um = pkgs.stdenv.mkDerivation {
           name = "um";
           src = ./.;
+          nativeBuildInputs = [ pkgs.makeWrapper ];
           buildInputs = [gems pkgs.ruby_3_0];
           installPhase = ''
             mkdir -p $out
             cp -r $src/* $out
+            chmod 777 $out/lib/um/commands.rb
+            wrapProgram "$out/lib/um/commands.rb" --prefix PATH : ${pkgs.lib.strings.makeBinPath [ pkgs.ruby_3_0 ]}
           '';
         };
 
@@ -59,10 +68,6 @@
           config = lib.mkIf config.programs.um.enable {
             
             home.file.".um/umconfig".text = lib.mkBefore config.programs.um.extraConfig;
-
-           home.sessionVariables = {
-             UMCONFIG_HOME = "~/.config/umconfig";
-           };
             
             };
           }; 
