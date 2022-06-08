@@ -39,7 +39,9 @@
            # gem install um.gem
            mkdir -p $out/bin
            cp -r $src/* $out
-           # wrapProgram "$out/bin/um" --prefix PATH : ${pkgs.lib.strings.makeBinPath [ umRuby ]}
+           wrapProgram "$out/bin/um" \
+             --prefix PATH : ${pkgs.lib.strings.makeBinPath [ umRuby ]} \
+             --prefix UMCONFIG_HOME : $out
          '';
       };
 
@@ -73,7 +75,9 @@
           # implementation
           config = lib.mkIf config.programs.um.enable {
             
-            home.file.".um/umconfig".text = lib.mkBefore config.programs.um.extraConfig;
+            environment.systemPackages = [defaultPackage];
+
+            "${defaultPackage.out}/umconfig".text = lib.mkBefore config.programs.um.extraConfig;
             
             };
           }; 
