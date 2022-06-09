@@ -40,8 +40,7 @@
            mkdir -p $out/bin
            cp -r $src/* $out
            wrapProgram "$out/bin/um" \
-             --prefix PATH : ${pkgs.lib.strings.makeBinPath [ umRuby ]} \
-             --prefix UMCONFIG_HOME : $out
+             --prefix PATH : ${pkgs.lib.strings.makeBinPath [ umRuby ]}
          '';
       };
 
