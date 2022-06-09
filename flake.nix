@@ -61,9 +61,7 @@
           # define module options
           options = {
             programs.um = {
-
-              enable = lib.mkEnableOption "Enable um configuration. This does not enable the package in environment.systemPackages or home.programs.";
-
+              enable = lib.mkEnableOption "Enable um.";
               extraConfig = lib.mkOption {
                 type = lib.types.lines;
                 description = "Additional configuration.";
@@ -74,10 +72,14 @@
 
           # implementation
           config = lib.mkIf config.programs.um.enable {
-            
-            environment.systemPackages = [defaultPackage];
 
-            "${defaultPackage.out}/umconfig".text = lib.mkBefore config.programs.um.extraConfig;
+            # For global Install:
+            # environment.systemPackages = [defaultPackage];
+
+            # For Home Manager:
+            home.packages = [ defaultPackage ];
+
+            home.file.".um/umconfig".text = lib.mkBefore config.programs.um.extraConfig;
             
             };
           }; 
