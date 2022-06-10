@@ -35,8 +35,6 @@
         nativeBuildInputs = [ pkgs.makeWrapper ];
         buildInputs = umBuildInputs;
          installPhase = ''
-           # gem build -o um.gem
-           # gem install um.gem
            mkdir -p $out/bin
            cp -r $src/* $out
            wrapProgram "$out/bin/um" \
